@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KivuPass — Billetterie #1 en Afrique Centrale</title>
+<meta name="description" content="KivuPass est la plateforme de billetterie numérique #1 en Afrique centrale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #8B7332;
+  --gold-light: #A6893D;
+  --gold-glow: rgba(139,115,50,0.18);
+  --gold-deep: #6B5828;
+  --black: #0A0A0C;
+  --dark: #101014;
+  --dark-2: #14141A;
+  --dark-3: #1A1A21;
+  --dark-4: #212129;
+  --dark-5: #2B2B35;
+  --white: #E8DFC8;
+  --off-white: #D4CDB8;
+  --text: #E0D8C4;
+  --text-muted: #7A7568;
+  --text-dim: #4A4840;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--black);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 72px;
+  background: rgba(10,10,12,0.8);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.3s;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.nav-logo span { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1.5px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+  transform-origin: left;
+}
+
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: none;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--dark-5);
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--white);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(139,115,50,0.35);
+}
+
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+
+.btn-large {
+  padding: 16px 36px;
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+.btn-outline-white {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: var(--white);
+}
+
+.btn-outline-white:hover {
+  border-color: var(--gold);
+  background: rgba(139,115,50,0.07);
+  color: var(--gold-light);
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px 80px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-bg-image {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
+  filter: brightness(0.1) saturate(0.4) sepia(0.3);
+}
+
+.hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,10,12,0.98) 0%, rgba(10,10,12,0.85) 45%, rgba(139,115,50,0.04) 100%);
+}
+
+.hero-bg-mesh {
+  position: absolute;
+  bottom: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(139,115,50,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(139,115,50,0.12);
+  border: 1px solid rgba(139,115,50,0.3);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--white);
+  margin-bottom: 30px;
+}
+
+.hero-title .accent {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.hero-title .outline {
+  -webkit-text-stroke: 2px rgba(228,220,200,0.2);
+  color: transparent;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 40px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 70px;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-stat-item { display: flex; flex-direction: column; }
+
+.hero-stat-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: var(--white);
+  line-height: 1;
+}
+
+.hero-stat-number .plus { color: var(--gold); }
+
+.hero-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--dark-5);
+}
+
+.hero-visual {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 380px;
+}
+
+.hero-visual-main {
+  width: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+}
+
+.hero-visual-main img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.75) sepia(0.1);
+}
+
+.hero-floating-card {
+  position: absolute;
+  background: rgba(20,20,26,0.92);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(139,115,50,0.15);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+}
+
+.hero-floating-card-1 {
+  bottom: -24px;
+  left: -48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-card-icon {
+  width: 40px; height: 40px;
+  background: var(--gold);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.hero-card-text strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.hero-card-text span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.hero-floating-card-2 {
+  top: 40px;
+  right: -32px;
+  text-align: center;
+}
+
+.hero-card-2-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.hero-card-2-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+section { padding: 110px 60px; }
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 28px; height: 1.5px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--white);
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-top: 16px;
+}
+
+.ticker-wrapper {
+  background: var(--gold);
+  overflow: hidden;
+  padding: 14px 0;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 0;
+  animation: ticker 25s linear infinite;
+  width: max-content;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 30px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--black);
+  white-space: nowrap;
+}
+
+.ticker-sep {
+  width: 4px; height: 4px;
+  background: rgba(10,10,12,0.4);
+  border-radius: 50%;
+}
+
+.features-section { background: var(--dark); }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--dark-3);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--dark-3);
+}
+
+.feature-card {
+  background: var(--dark);
+  padding: 48px 44px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.feature-card:hover { background: var(--dark-2); }
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.feature-card:hover::before { transform: scaleX(1); }
+
+.feature-icon {
+  width: 52px; height: 52px;
+  background: rgba(139,115,50,0.1);
+  border: 1px solid rgba(139,115,50,0.2);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+}
+
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.feature-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.events-section { background: var(--black); }
+
+.events-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter-pill {
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid var(--dark-5);
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.filter-pill:hover, .filter-pill.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.event-card {
+  background: var(--dark-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--dark-3);
+  transition: transform 0.3s ease, border-color 0.3s;
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(139,115,50,0.3);
+}
+
+.event-card-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.event-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.event-card:hover .event-card-image img { transform: scale(1.07); }
+
+.event-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20,20,26,0.7) 0%, transparent 50%);
+}
+
+.event-tag {
+  position: absolute;
+  top: 14px; left: 14px;
+  padding: 5px 12px;
+  background: var(--gold);
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  z-index: 2;
+}
+
+.event-card-body { padding: 22px; }
+
+.event-date {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.event-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.event-location {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 18px;
+}
+
+.event-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-4);
+}
+
+.event-price {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--white);
+}
+
+.event-price small {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  display: block;
+  margin-top: 1px;
+}
+
+.btn-event {
+  padding: 9px 18px;
+  background: var(--dark-4);
+  border: 1px solid var(--dark-5);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-event:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+}
+
+.events-cta {
+  text-align: center;
+  margin-top: 52px;
+}
+
+.how-section {
+  background: var(--dark);
+  position: relative;
+}
+
+.how-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(139,115,50,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+.how-step {
+  position: relative;
+  text-align: center;
+}
+
+.how-step-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(139,115,50,0.07);
+  position: absolute;
+  top: -15px; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.how-step-icon {
+  width: 64px; height: 64px;
+  background: var(--dark-2);
+  border: 1.5px solid var(--dark-4);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin: 0 auto 20px;
+  position: relative;
+  z-index: 2;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.how-step:hover .how-step-icon {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(139,115,50,0.2);
+}
+
+.how-step-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.how-step-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+}
+
+.testimonials-section { background: var(--black); }
+
+.section-header-flex {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  grid-template-rows: auto auto;
+}
+
+.testimonial-card {
+  background: var(--dark-2);
+  border: 1px solid var(--dark-3);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(139,115,50,0.25);
+  transform: translateY(-4px);
+}
+
+.testimonial-quote {
+  position: absolute;
+  top: 28px; right: 28px;
+  font-family: 'Syne', sans-serif;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: rgba(139,115,50,0.12);
+  font-weight: 800;
+}
+
+.testimonial-text {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.testimonial-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--dark-4);
+  flex-shrink: 0;
+}
+
+.testimonial-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+.testimonial-role {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.partners-section {
+  background: var(--dark);
+  padding: 70px 60px;
+}
+
+.partners-title {
+  text-align: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 44px;
+}
+
+.partners-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+  flex-wrap: wrap;
+}
+
+.partner-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.5px;
+  color: var(--text-dim);
+  transition: color 0.3s;
+}
+
+.partner-logo:hover { color: var(--text-muted); }
+
+.cta-section {
+  background: var(--black);
+  padding: 80px 60px;
+}
+
+.cta-inner {
+  background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+  border-radius: var(--radius-xl);
+  padding: 80px 90px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.cta-inner::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -1.5px;
+  color: var(--black);
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.cta-desc {
+  font-size: 1rem;
+  color: rgba(10,10,12,0.7);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.cta-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.btn-dark {
+  background: var(--black);
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.btn-dark:hover {
+  background: var(--dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+}
+
+.cta-note {
+  font-size: 0.8rem;
+  color: rgba(10,10,12,0.55);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s, visibility 0.35s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--dark-2);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 460px;
+  padding: 48px;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+}
+
+.modal-overlay.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 34px; height: 34px;
+  background: var(--dark-4);
+  border: none;
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--dark-5);
+  color: var(--white);
+}
+
+.modal-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+
+.modal-logo span { color: var(--gold); }
+
+.modal-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--dark-3);
+  border-radius: 50px;
+  padding: 4px;
+  margin-bottom: 32px;
+}
+
+.modal-tab {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.modal-tab.active {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--dark-3);
+  border: 1.5px solid var(--dark-5);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(139,115,50,0.1);
+}
+
+.form-group input::placeholder { color: var(--text-dim); }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.modal-submit {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.modal-footer-text {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: 20px;
+}
+
+.modal-footer-text a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+footer {
+  background: var(--dark-2);
+  border-top: 1px solid var(--dark-3);
+  padding: 80px 60px 40px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid var(--dark-4);
+}
+
+.footer-brand p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-top: 14px;
+  max-width: 280px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.footer-social-btn {
+  width: 38px; height: 38px;
+  background: var(--dark-4);
+  border: 1px solid var(--dark-5);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.footer-social-btn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+}
+
+.footer-col-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--white);
+  margin-bottom: 22px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 36px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-copy {
+  font-size: 0.825rem;
+  color: var(--text-dim);
+}
+
+.footer-copy span { color: var(--gold); }
+
+.footer-legal {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-legal a {
+  font-size: 0.825rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-legal a:hover { color: var(--text-muted); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 110px 24px 70px; }
+  .hero-visual { display: none; }
+  section { padding: 70px 24px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .events-grid { grid-template-columns: 1fr; }
+  .how-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cta-inner { flex-direction: column; padding: 52px 36px; }
+  .cta-actions { align-items: flex-start; }
+  .partners-section { padding: 50px 24px; }
+}
+
+/* Fallback images cassées */
+img { background: var(--dark-3); }
+img[src=""], img:not([src]) { display: none; }
+.testimonial-avatar { background: var(--dark-4); }
+.event-card-image img { background: var(--dark-3); min-height: 220px; }
+/* ── LEGAL MODAL ── */
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.legal-overlay.open { opacity: 1; visibility: visible; }
+
+.legal-modal {
+  background: var(--dark-2);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 720px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(24px);
+  transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+  overflow: hidden;
+}
+.legal-overlay.open .legal-modal { transform: translateY(0); }
+
+.legal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 36px 22px;
+  border-bottom: 1px solid var(--dark-4);
+  flex-shrink: 0;
+}
+.legal-modal-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--white);
+}
+.legal-modal-close {
+  width: 36px; height: 36px;
+  background: var(--dark-4);
+  border: none;
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.legal-modal-close:hover { background: var(--dark-5); color: var(--white); }
+
+.legal-modal-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 16px 36px 0;
+  border-bottom: 1px solid var(--dark-4);
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+.legal-tab {
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+}
+.legal-tab:hover { color: var(--white); }
+.legal-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.legal-modal-body {
+  padding: 32px 36px 40px;
+  overflow-y: auto;
+  flex: 1;
+  line-height: 1.75;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.legal-modal-body h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--white);
+  margin: 28px 0 10px;
+}
+.legal-modal-body h3:first-child { margin-top: 0; }
+.legal-modal-body p { margin-bottom: 12px; }
+.legal-modal-body ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.legal-modal-body .legal-chip {
+  display: inline-block;
+  background: rgba(139,115,50,0.12);
+  border: 1px solid rgba(139,115,50,0.25);
+  color: var(--gold-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+.legal-modal-body .legal-highlight {
+  background: var(--dark-3);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Kivu<span>Pass</span></a>
+  <ul class="nav-links">
+    <li><a href="#events">Explorer</a></li>
+    <li><a href="#how">Comment ça marche</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost" onclick="openModal('login'); return false;">Connexion</a>
+    <a href="#" class="btn btn-gold" onclick="openModal('signup'); return false;">Créer un compte</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-image"></div>
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-bg-mesh"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Vos événements, réinventés
+    </div>
+
+    <h1 class="hero-title">
+      Vendez vos<br>billets <span class="accent">en ligne,</span><br><span class="outline">simplement.</span>
+    </h1>
+
+    <p class="hero-desc">
+      Plonge dans l'extraordinaire avec KivuPass — la plateforme qui transforme chaque événement en une aventure mémorable. Simple, rapide, sécurisé.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#events" class="btn btn-gold btn-large">Explorer les événements</a>
+      <a href="#" class="btn btn-outline-white btn-large" onclick="openModal('signup'); return false;">Créer votre billetterie</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <span class="hero-stat-number">500<span class="plus">+</span></span>
+        <span class="hero-stat-label">Événements</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-number">1k<span class="plus">+</span></span>
+        <span class="hero-stat-label">Billets vendus</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-number">100<span class="plus">+</span></span>
+        <span class="hero-stat-label">Organisateurs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-visual-main">
+      <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=700&q=85&auto=format&fit=crop" alt="Concert event" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=700&q=85&auto=format&fit=crop'">
+    </div>
+    <div class="hero-floating-card hero-floating-card-1">
+      <div class="hero-card-icon">🎟️</div>
+      <div class="hero-card-text">
+        <strong>Billet sécurisé</strong>
+        <span>QR Code unique</span>
+      </div>
+    </div>
+    <div class="hero-floating-card hero-floating-card-2">
+      <div class="hero-card-2-number">4.9★</div>
+      <div class="hero-card-2-label">Note moyenne</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrapper">
+  <div class="ticker-track">
+    <div class="ticker-item">Concerts<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Festivals<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Théâtre<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Sport<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Gastronomie<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Arts visuels<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Cinéma<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Danse<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Conférences<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Expositions<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Concerts<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Festivals<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Théâtre<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Sport<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Gastronomie<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Arts visuels<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Cinéma<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Danse<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Conférences<div class="ticker-sep"></div></div>
+    <div class="ticker-item">Expositions<div class="ticker-sep"></div></div>
+  </div>
+</div>
+
+<section class="features-section" id="about">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Pourquoi KivuPass</div>
+    <h2 class="section-title">La plateforme pensée<br>pour les créateurs d'événements</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🎫</div>
+      <h3 class="feature-title">Billetterie instantanée</h3>
+      <p class="feature-desc">Créez votre billetterie en quelques minutes. Interface intuitive, personnalisation complète, disponible 24h/24.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">📱</div>
+      <h3 class="feature-title">QR Code & validation</h3>
+      <p class="feature-desc">Chaque billet génère un QR Code unique pour une vérification rapide à l'entrée. Zéro fraude, 100% fiable.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">💳</div>
+      <h3 class="feature-title">Paiement mobile money</h3>
+      <p class="feature-desc">Airtel Money, M-Pesa, Orange Money et carte bancaire. Payez comme vous le souhaitez, en toute sécurité.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">📊</div>
+      <h3 class="feature-title">Tableau de bord analytique</h3>
+      <p class="feature-desc">Suivez vos ventes en temps réel, gérez vos participants et optimisez vos campagnes depuis un seul endroit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="events-section" id="events">
+  <div class="section-header-flex">
+    <div class="reveal">
+      <div class="section-eyebrow">Découvrir</div>
+      <h2 class="section-title">Événements à venir</h2>
+    </div>
+    <div class="events-filters reveal">
+      <button class="filter-pill active">Tout</button>
+      <button class="filter-pill">Musique</button>
+      <button class="filter-pill">Théâtre</button>
+      <button class="filter-pill">Festivals</button>
+      <button class="filter-pill">Sports</button>
+      <button class="filter-pill">Arts visuels</button>
+    </div>
+  </div>
+
+  <div class="events-grid">
+    <div class="event-card reveal">
+      <div class="event-card-image">
+        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&q=80&auto=format&fit=crop" alt="Festival" onerror="this.onerror=null;this.parentElement.style.background=\'var(--dark-3)\'">
+        <span class="event-tag">Festival</span>
+      </div>
+      <div class="event-card-body">
+        <div class="event-date">📅 15 Avril 2025 · 18:00</div>
+        <h3 class="event-name">Festival Africa Style — Édition Kinshasa</h3>
+        <div class="event-location">📍 Palais du Peuple, Kinshasa</div>
+        <div class="event-footer">
+          <div class="event-price">15,000 FC<small>à partir de</small></div>
+          <a href="#" class="btn-event" onclick="openModal('signup'); return false;">Commander</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal reveal-delay-1">
+      <div class="event-card-image">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80&auto=format&fit=crop" alt="Concert" onerror="this.onerror=null;this.parentElement.style.background=\'var(--dark-3)\'">
+        <span class="event-tag">Concert</span>
+      </div>
+      <div class="event-card-body">
+        <div class="event-date">📅 22 Avril 2025 · 20:00</div>
+        <h3 class="event-name">Nuit de la Rumba Congolaise</h3>
+        <div class="event-location">📍 Centre Culturel, Goma</div>
+        <div class="event-footer">
+          <div class="event-price">10,000 FC<small>à partir de</small></div>
+          <a href="#" class="btn-event" onclick="openModal('signup'); return false;">Commander</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal reveal-delay-2">
+      <div class="event-card-image">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80&auto=format&fit=crop" alt="Conférence" onerror="this.onerror=null;this.parentElement.style.background=\'var(--dark-3)\'">
+        <span class="event-tag">Conférence</span>
+      </div>
+      <div class="event-card-body">
+        <div class="event-date">📅 5 Mai 2025 · 09:00</div>
+        <h3 class="event-name">Forum Innovation Afrique 2025</h3>
+        <div class="event-location">📍 Hotel Fleuve Congo, Kinshasa</div>
+        <div class="event-footer">
+          <div class="event-price">25,000 FC<small>à partir de</small></div>
+          <a href="#" class="btn-event" onclick="openModal('signup'); return false;">Commander</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="events-cta reveal">
+    <a href="#" class="btn btn-gold btn-large">Explorer tous les événements →</a>
+  </div>
+</section>
+
+<section class="how-section" id="how">
+  <div class="section-header" style="text-align:center; max-width:600px; margin:0 auto 70px;">
+    <div class="section-eyebrow reveal" style="justify-content:center;">Comment ça marche</div>
+    <h2 class="section-title reveal">En 4 étapes,<br>c'est <span style="color:var(--gold-light);font-style:italic">fait.</span></h2>
+  </div>
+
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <div class="how-step-number">01</div>
+      <div class="how-step-icon">👤</div>
+      <h4 class="how-step-title">Créez votre compte</h4>
+      <p class="how-step-desc">Inscription rapide en 30 secondes. Email ou Google, à vous de choisir.</p>
+    </div>
+    <div class="how-step reveal reveal-delay-1">
+      <div class="how-step-number">02</div>
+      <div class="how-step-icon">🔍</div>
+      <h4 class="how-step-title">Explorez les événements</h4>
+      <p class="how-step-desc">Parcourez notre catalogue d'événements près de chez vous.</p>
+    </div>
+    <div class="how-step reveal reveal-delay-2">
+      <div class="how-step-number">03</div>
+      <div class="how-step-icon">💳</div>
+      <h4 class="how-step-title">Payez en sécurité</h4>
+      <p class="how-step-desc">Mobile money, carte bancaire — paiement sécurisé instantané.</p>
+    </div>
+    <div class="how-step reveal reveal-delay-3">
+      <div class="how-step-number">04</div>
+      <div class="how-step-icon">🎫</div>
+      <h4 class="how-step-title">Recevez votre billet</h4>
+      <p class="how-step-desc">QR Code unique envoyé sur votre téléphone. Présentez à l'entrée, c'est tout.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section">
+  <div class="section-header-flex">
+    <div class="reveal">
+      <div class="section-eyebrow">Témoignages</div>
+      <h2 class="section-title">Avec qui nous<br>collaborons</h2>
+    </div>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">KivuPass a transformé la façon dont nous gérons nos événements. La vente de billets en ligne, les QR codes à l'entrée et le tableau de bord en temps réel nous ont fait gagner un temps considérable. Je ne reviendrais jamais en arrière.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Michaël">
+        <div>
+          <div class="testimonial-name">Michaël Tshimbe</div>
+          <div class="testimonial-role">Directeur artistique, Studio Lumière Events</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Nous avons utilisé KivuPass pour notre gala annuel. La plateforme est intuitive, le support réactif et nos participants ont adoré la fluidité de l'expérience d'achat. Un vrai niveau professionnel.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Sylvie">
+        <div>
+          <div class="testimonial-name">Sylvie Ngombe</div>
+          <div class="testimonial-role">Responsable événementiel, Fonds Horizon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">En tant qu'organisateur indépendant, j'avais besoin d'un outil simple et fiable. KivuPass coche toutes les cases : création rapide, paiements sécurisés et statistiques claires. Exactement ce qu'il me fallait.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Jonas">
+        <div>
+          <div class="testimonial-name">Jonas Kalala</div>
+          <div class="testimonial-role">Organisateur indépendant, JK Productions</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Notre conférence tech a rassemblé plus de 400 participants cette année. Grâce à KivuPass, la gestion des inscriptions et des accès a été irréprochable. Une solution que je recommande sans hésitation.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Arnaud">
+        <div>
+          <div class="testimonial-name">Arnaud Mbuyi</div>
+          <div class="testimonial-role">Co-fondateur, TechConnect Summit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Mes soirées gastronomiques affichent complet depuis que j'utilise KivuPass. La page événement est soignée, les acheteurs ont confiance et je reçois mes paiements rapidement. C'est une vraie différence.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Christelle">
+        <div>
+          <div class="testimonial-name">Christelle Ilunga</div>
+          <div class="testimonial-role">Chef & organisatrice, Saveurs du Monde</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">J'ai lancé mon premier festival de musique live avec KivuPass. La plateforme m'a permis de gérer les catégories de billets, les accès VIP et les remboursements sans aucun stress. Vraiment impressionnant.</p>
+      <div class="testimonial-author">
+        <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80&auto=format&fit=crop&crop=face" onerror="this.onerror=null;this.src=\'https://ui-avatars.com/api/?background=2B2B35&color=8B7332&size=100&bold=true&name=KP\'" alt="Didier">
+        <div>
+          <div class="testimonial-name">Didier Luzolo</div>
+          <div class="testimonial-role">Fondateur, Rythmes Urbains Festival</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="partners-section">
+  <p class="partners-title">Ils nous font confiance</p>
+  <div class="partners-logos">
+    <span class="partner-logo">Studio Lumière</span>
+    <span class="partner-logo">Fonds Horizon</span>
+    <span class="partner-logo">JK Productions</span>
+    <span class="partner-logo">TechConnect Summit</span>
+    <span class="partner-logo">Saveurs du Monde</span>
+    <span class="partner-logo">Rythmes Urbains</span>
+  </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section class="features-section" id="pricing">
+  <div class="section-header reveal" style="margin-bottom:60px;">
+    <div class="section-eyebrow">Tarifs</div>
+    <h2 class="section-title">Des formules pour<br>chaque organisateur</h2>
+    <p class="section-desc">Commencez gratuitement, évoluez à votre rythme. Aucun frais caché.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+    <div class="feature-card reveal" style="border:1px solid var(--dark-4);border-radius:var(--radius-lg);text-align:center;padding:48px 36px;">
+      <div class="feature-icon" style="margin:0 auto 20px;">🎯</div>
+      <h3 class="feature-title" style="margin-bottom:6px;">Starter</h3>
+      <div style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--white);margin:20px 0 6px;">Gratuit</div>
+      <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:28px;">Pour commencer sans risque</p>
+      <ul style="list-style:none;text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;">
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Jusqu'à 3 événements</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> 100 billets / événement</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> QR Code & validation</li>
+        <li style="font-size:0.88rem;color:var(--text-dim);display:flex;gap:10px;align-items:center;"><span>✗</span> Tableau de bord avancé</li>
+      </ul>
+      <a href="#" class="btn btn-outline-white btn-large" style="width:100%;justify-content:center;" onclick="openModal('signup'); return false;">Commencer gratuitement</a>
+    </div>
+    <div class="feature-card reveal reveal-delay-1" style="border:1.5px solid var(--gold);border-radius:var(--radius-lg);text-align:center;padding:48px 36px;position:relative;">
+      <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-size:0.75rem;font-weight:700;letter-spacing:1px;padding:4px 16px;border-radius:50px;text-transform:uppercase;">Populaire</div>
+      <div class="feature-icon" style="margin:0 auto 20px;background:rgba(139,115,50,0.2);border-color:rgba(139,115,50,0.4);">🚀</div>
+      <h3 class="feature-title" style="margin-bottom:6px;">Pro</h3>
+      <div style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--gold);margin:20px 0 6px;">29<span style="font-size:1.2rem">$/mois</span></div>
+      <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:28px;">Pour les organisateurs actifs</p>
+      <ul style="list-style:none;text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;">
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Événements illimités</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Billets illimités</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Tableau de bord analytique</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Billets VIP & multi-catégories</li>
+      </ul>
+      <a href="#" class="btn btn-gold btn-large" style="width:100%;justify-content:center;" onclick="openModal('signup'); return false;">Démarrer en Pro</a>
+    </div>
+    <div class="feature-card reveal reveal-delay-2" style="border:1px solid var(--dark-4);border-radius:var(--radius-lg);text-align:center;padding:48px 36px;">
+      <div class="feature-icon" style="margin:0 auto 20px;">🏢</div>
+      <h3 class="feature-title" style="margin-bottom:6px;">Entreprise</h3>
+      <div style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--white);margin:20px 0 6px;">Sur mesure</div>
+      <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:28px;">Pour les grandes organisations</p>
+      <ul style="list-style:none;text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;">
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Tout du plan Pro</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Intégrations personnalisées</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> Manager dédié</li>
+        <li style="font-size:0.88rem;color:var(--text-muted);display:flex;gap:10px;align-items:center;"><span style="color:var(--gold)">✓</span> SLA & support prioritaire</li>
+      </ul>
+      <a href="#contact" class="btn btn-outline-white btn-large" style="width:100%;justify-content:center;">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section style="background:var(--black);padding:110px 60px;" id="contact">
+  <div class="section-header reveal" style="text-align:center;max-width:600px;margin:0 auto 60px;">
+    <div class="section-eyebrow" style="justify-content:center;">Contact</div>
+    <h2 class="section-title">Une question ?<br>On est là.</h2>
+    <p class="section-desc" style="text-align:center;margin:16px auto 0;">Notre équipe répond sous 24h. Écrivez-nous — nous sommes disponibles.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:900px;margin:0 auto;">
+    <div class="reveal">
+      <div style="display:flex;flex-direction:column;gap:28px;">
+        <div style="display:flex;align-items:flex-start;gap:16px;">
+          <div style="width:48px;height:48px;background:rgba(139,115,50,0.1);border:1px solid rgba(139,115,50,0.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">📧</div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:4px;">Email</div>
+            <a href="mailto:kivupass@gmail.com" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;">kivupass@gmail.com</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;">
+          <div style="width:48px;height:48px;background:rgba(139,115,50,0.1);border:1px solid rgba(139,115,50,0.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">💬</div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:4px;">WhatsApp</div>
+            <a href="https://wa.me/243979728411" target="_blank" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;">+243 979 728 411</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;">
+          <div style="width:48px;height:48px;background:rgba(139,115,50,0.1);border:1px solid rgba(139,115,50,0.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">⏰</div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:4px;">Disponibilité</div>
+            <span style="color:var(--text-muted);font-size:0.9rem;">Lun – Sam · 8h00 – 20h00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div style="background:var(--dark-2);border:1px solid var(--dark-4);border-radius:var(--radius-lg);padding:36px;">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:8px;">Nom complet</label>
+          <input type="text" id="contact-name" placeholder="Votre nom" style="width:100%;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:10px;padding:12px 16px;color:var(--text);font-size:0.9rem;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:8px;">Email</label>
+          <input type="email" id="contact-email" placeholder="votre@email.com" style="width:100%;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:10px;padding:12px 16px;color:var(--text);font-size:0.9rem;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:8px;">Message</label>
+          <textarea id="contact-msg" placeholder="Comment pouvons-nous vous aider ?" style="width:100%;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:10px;padding:12px 16px;color:var(--text);font-size:0.9rem;outline:none;font-family:'Inter',sans-serif;min-height:110px;resize:vertical;"></textarea>
+        </div>
+        <button class="btn btn-gold btn-large" style="width:100%;justify-content:center;" id="contact-btn" onclick="sendContact()">Envoyer le message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="cta-content">
+      <h2 class="cta-title">Prêt à créer votre<br>prochain événement ?</h2>
+      <p class="cta-desc">Rejoignez des centaines d'organisateurs qui font confiance à KivuPass pour gérer leur billetterie en RDC et en Afrique centrale.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="#" class="btn btn-dark btn-large" onclick="openModal('signup'); return false;">Créer votre billetterie →</a>
+      <span class="cta-note">✓ Gratuit · ✓ Sans carte bancaire · ✓ Prêt en 5 min</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo">Kivu<span style="color:var(--gold)">Pass</span></div>
+      <p>Simplifiez. Vendez. Célébrez. La billetterie pensée pour les créateurs d'événements ambitieux.</p>
+      <div class="footer-social">
+        <a href="#" class="footer-social-btn">f</a>
+        <a href="#" class="footer-social-btn">in</a>
+        <a href="#" class="footer-social-btn">📸</a>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="footer-col-title">Découvrir KivuPass</h4>
+      <ul class="footer-links">
+        <li><a href="#">Créez votre compte</a></li>
+        <li><a href="#">Mes billets</a></li>
+        <li><a href="#">Créez votre billetterie</a></li>
+        <li><a href="#">Explorer les événements</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="footer-col-title">Mentions légales</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="openLegal('cgu'); return false;">Conditions de vente</a></li>
+        <li><a href="#" onclick="openLegal('confidentialite'); return false;">Confidentialité</a></li>
+        <li><a href="#" onclick="openLegal('apropos'); return false;">À propos</a></li>
+        <li><a href="#" onclick="openLegal('cookies'); return false;">Cookies</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="footer-col-title">Support</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="openLegal('aide'); return false;">Centre d'aide</a></li>
+        <li><a href="#how">Comment ça marche</a></li>
+        <li><a href="#" onclick="openLegal('remboursements'); return false;">Remboursements</a></li>
+        <li><a href="#contact">Contacter l'équipe</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 <span>KIVUPASS</span> — Tous droits réservés.</p>
+    <div class="footer-legal">
+      <a href="#" onclick="openLegal('cgu'); return false;">Conditions</a>
+      <a href="#" onclick="openLegal('confidentialite'); return false;">Confidentialité</a>
+      <a href="#" onclick="openLegal('cookies'); return false;">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">Kivu<span>Pass</span></div>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-signup" onclick="switchTab('signup')">Créer un compte</button>
+      <button class="modal-tab" id="tab-login" onclick="switchTab('login')">Connexion</button>
+    </div>
+
+    <div id="form-signup">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" placeholder="Votre prénom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="nom@exemple.com">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="Créer un mot de passe">
+      </div>
+      <button class="btn btn-gold btn-large modal-submit">Créer mon compte</button>
+      <p class="modal-footer-text">Déjà un compte ? <a href="#" onclick="switchTab('login'); return false;">Connectez-vous</a></p>
+    </div>
+
+    <div id="form-login" style="display:none">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="nom@exemple.com">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="Votre mot de passe">
+      </div>
+      <button class="btn btn-gold btn-large modal-submit">Se connecter</button>
+      <p class="modal-footer-text">Pas encore de compte ? <a href="#" onclick="switchTab('signup'); return false;">Créer un compte</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Filter pills
+document.querySelectorAll('.filter-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Modal
+function openModal(tab) {
+  document.getElementById('modal').classList.add('open');
+  switchTab(tab);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchTab(tab) {
+  document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('form-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Modal form submit feedback
+document.querySelectorAll('.modal-submit').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const original = this.textContent;
+    this.textContent = '✓ Succès !';
+    this.style.background = '#4CAF50';
+    setTimeout(() => {
+      this.textContent = original;
+      this.style.background = '';
+      closeModal();
+    }, 1800);
+  });
+});
+
+// Contact form
+function sendContact() {
+  const btn = document.getElementById('contact-btn');
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const msg = document.getElementById('contact-msg').value.trim();
+  if (!name || !email || !msg) {
+    btn.textContent = '⚠ Remplissez tous les champs';
+    btn.style.background = '#c0392b';
+    setTimeout(() => { btn.textContent = 'Envoyer le message'; btn.style.background = ''; }, 2000);
+    return;
+  }
+  btn.textContent = '✓ Message envoyé !';
+  btn.style.background = '#4CAF50';
+  document.getElementById('contact-name').value = '';
+  document.getElementById('contact-email').value = '';
+  document.getElementById('contact-msg').value = '';
+  setTimeout(() => { btn.textContent = 'Envoyer le message'; btn.style.background = ''; }, 3000);
+}
+
+// Sticky nav
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.background = window.scrollY > 60
+    ? 'rgba(10,10,12,0.97)'
+    : 'rgba(10,10,12,0.8)';
+});
+</script>
+
+<!-- ── LEGAL MODAL ── -->
+<div class="legal-overlay" id="legal-modal" onclick="if(event.target===this)closeLegal()">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <span class="legal-modal-title" id="legal-modal-title">Conditions de vente</span>
+      <button class="legal-modal-close" onclick="closeLegal()">✕</button>
+    </div>
+    <div class="legal-modal-tabs" id="legal-tabs">
+      <button class="legal-tab active" onclick="switchLegal('cgu',this)">Conditions de vente</button>
+      <button class="legal-tab" onclick="switchLegal('confidentialite',this)">Confidentialité</button>
+      <button class="legal-tab" onclick="switchLegal('cookies',this)">Cookies</button>
+      <button class="legal-tab" onclick="switchLegal('remboursements',this)">Remboursements</button>
+      <button class="legal-tab" onclick="switchLegal('aide',this)">Centre d'aide</button>
+      <button class="legal-tab" onclick="switchLegal('apropos',this)">À propos</button>
+    </div>
+    <div class="legal-modal-body" id="legal-body"></div>
+  </div>
+</div>
+
+<script>
+const legalContent = {
+  cgu: {
+    title: "Conditions générales de vente",
+    html: `
+      <span class="legal-chip">Mise à jour : Mars 2025</span>
+      <h3>1. Objet</h3>
+      <p>Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des transactions effectuées sur la plateforme KivuPass, accessible à l'adresse kivupass.com, exploitée par KivuPass SARL, société enregistrée à Goma, Nord-Kivu, République Démocratique du Congo.</p>
+      <h3>2. Accès à la plateforme</h3>
+      <p>L'accès à KivuPass est ouvert à toute personne physique majeure ou personne morale disposant de la capacité juridique. L'utilisation du service implique l'acceptation pleine et entière des présentes CGV.</p>
+      <h3>3. Création de compte</h3>
+      <p>Pour acheter ou vendre des billets, vous devez créer un compte en fournissant des informations exactes et à jour. Vous êtes responsable de la confidentialité de vos identifiants. Tout accès frauduleux à votre compte doit être signalé immédiatement à notre équipe.</p>
+      <h3>4. Achat de billets</h3>
+      <p>La vente est définitive dès confirmation du paiement. Un billet numérique (QR Code unique) vous est délivré immédiatement par email et est disponible dans votre espace personnel. Chaque billet est nominatif et ne peut être utilisé qu'une seule fois.</p>
+      <div class="legal-highlight">⚠️ Toute revente non autorisée de billets est strictement interdite et entraînera l'annulation du billet sans remboursement.</div>
+      <h3>5. Prix et paiement</h3>
+      <p>Les prix affichés sont en Francs Congolais (FC) ou en USD selon l'organisateur. KivuPass accepte les paiements via :</p>
+      <ul>
+        <li>Mobile Money (Airtel Money, M-Pesa, Orange Money)</li>
+        <li>Carte bancaire Visa / Mastercard</li>
+        <li>Virement bancaire (pour les commandes entreprises)</li>
+      </ul>
+      <p>Des frais de service de 5 % peuvent s'appliquer selon le mode de paiement et l'organisateur.</p>
+      <h3>6. Responsabilités de l'organisateur</h3>
+      <p>KivuPass est une plateforme intermédiaire. L'organisateur est seul responsable de la tenue de l'événement, de son contenu, et des conditions d'accès. En cas d'annulation par l'organisateur, KivuPass s'engage à faciliter le remboursement des acheteurs dans les délais prévus.</p>
+      <h3>7. Droit applicable</h3>
+      <p>Les présentes CGV sont soumises au droit congolais. Tout litige sera soumis aux juridictions compétentes de Kinshasa, République Démocratique du Congo.</p>
+    `
+  },
+  confidentialite: {
+    title: "Politique de confidentialité",
+    html: `
+      <span class="legal-chip">Mise à jour : Mars 2025</span>
+      <h3>1. Données collectées</h3>
+      <p>KivuPass collecte les données suivantes lors de votre utilisation de la plateforme :</p>
+      <ul>
+        <li><strong>Données d'identification :</strong> nom, prénom, adresse email, numéro de téléphone</li>
+        <li><strong>Données de paiement :</strong> mode de paiement (non stocké intégralement pour votre sécurité)</li>
+        <li><strong>Données de navigation :</strong> adresse IP, type de navigateur, pages visitées, durée de session</li>
+        <li><strong>Données d'événement :</strong> billets achetés, historique de participation</li>
+      </ul>
+      <h3>2. Finalités du traitement</h3>
+      <p>Vos données sont utilisées pour :</p>
+      <ul>
+        <li>Gérer votre compte et traiter vos achats</li>
+        <li>Envoyer vos billets et confirmations de commande</li>
+        <li>Améliorer nos services et personnaliser votre expérience</li>
+        <li>Envoyer des communications marketing (avec votre consentement)</li>
+        <li>Respecter nos obligations légales et fiscales</li>
+      </ul>
+      <h3>3. Conservation des données</h3>
+      <p>Vos données sont conservées pendant la durée de votre relation contractuelle avec KivuPass, et jusqu'à 5 ans après la clôture de votre compte pour les besoins légaux et fiscaux.</p>
+      <h3>4. Partage des données</h3>
+      <p>KivuPass ne vend jamais vos données personnelles. Elles peuvent être partagées avec :</p>
+      <ul>
+        <li>Les organisateurs d'événements (nom, email, billets achetés) pour la gestion des entrées</li>
+        <li>Nos prestataires techniques (hébergement, paiement) soumis à des obligations de confidentialité</li>
+        <li>Les autorités compétentes en cas d'obligation légale</li>
+      </ul>
+      <div class="legal-highlight">🔒 Toutes vos données sont stockées sur des serveurs sécurisés avec chiffrement SSL/TLS. Nous n'accédons jamais à vos données de paiement complètes.</div>
+      <h3>5. Vos droits</h3>
+      <p>Conformément à la réglementation en vigueur, vous disposez des droits suivants :</p>
+      <ul>
+        <li>Droit d'accès, de rectification et de suppression de vos données</li>
+        <li>Droit d'opposition au traitement à des fins marketing</li>
+        <li>Droit à la portabilité de vos données</li>
+      </ul>
+      <p>Pour exercer ces droits, contactez-nous à <strong>kivupass@gmail.com</strong>.</p>
+    `
+  },
+  cookies: {
+    title: "Politique de cookies",
+    html: `
+      <span class="legal-chip">Mise à jour : Mars 2025</span>
+      <h3>Qu'est-ce qu'un cookie ?</h3>
+      <p>Un cookie est un petit fichier texte déposé sur votre appareil lors de votre visite sur notre site. Il permet de mémoriser vos préférences, d'améliorer la navigation et d'analyser l'utilisation du service.</p>
+      <h3>Cookies utilisés par KivuPass</h3>
+      <h3>🔧 Cookies essentiels</h3>
+      <p>Indispensables au fonctionnement de la plateforme. Ils ne peuvent pas être désactivés.</p>
+      <ul>
+        <li><strong>session_id</strong> — Maintient votre session connectée</li>
+        <li><strong>csrf_token</strong> — Protège contre les attaques de type CSRF</li>
+        <li><strong>cart_data</strong> — Mémorise votre panier de billets</li>
+      </ul>
+      <h3>📊 Cookies analytiques</h3>
+      <p>Nous aident à comprendre comment vous utilisez le site pour l'améliorer (avec votre consentement).</p>
+      <ul>
+        <li><strong>_ga, _gid</strong> — Google Analytics (anonymisé)</li>
+        <li><strong>kv_visit</strong> — Suivi des pages visitées</li>
+      </ul>
+      <h3>🎯 Cookies marketing</h3>
+      <p>Utilisés pour vous proposer des événements pertinents (uniquement avec votre accord explicite).</p>
+      <ul>
+        <li><strong>kv_pref</strong> — Mémorise vos préférences de catégories d'événements</li>
+      </ul>
+      <h3>Gérer vos cookies</h3>
+      <p>Vous pouvez configurer votre navigateur pour refuser ou supprimer les cookies. Notez que certaines fonctionnalités du site peuvent alors ne plus fonctionner correctement.</p>
+      <div class="legal-highlight">En continuant à utiliser KivuPass, vous acceptez l'utilisation des cookies essentiels. Les cookies analytiques et marketing nécessitent votre consentement explicite.</div>
+    `
+  },
+  remboursements: {
+    title: "Politique de remboursement",
+    html: `
+      <span class="legal-chip">Mise à jour : Mars 2025</span>
+      <div class="legal-highlight">💡 Notre objectif : vous rembourser rapidement et sans friction en cas d'événement annulé ou de problème avéré.</div>
+      <h3>1. Événement annulé par l'organisateur</h3>
+      <p>Si un événement est officiellement annulé par l'organisateur, vous avez droit à un remboursement intégral du prix du billet, hors frais de service non remboursables.</p>
+      <ul>
+        <li>Remboursement initié dans les <strong>72 heures</strong> suivant l'annulation officielle</li>
+        <li>Crédit reçu sous <strong>5 à 10 jours ouvrables</strong> selon votre mode de paiement</li>
+        <li>Remboursement sur le même moyen de paiement utilisé à l'achat</li>
+      </ul>
+      <h3>2. Événement reporté</h3>
+      <p>En cas de report d'un événement, votre billet reste valable pour la nouvelle date. Si la nouvelle date ne vous convient pas, vous pouvez demander un remboursement dans un délai de <strong>7 jours</strong> suivant l'annonce du report.</p>
+      <h3>3. Demande de remboursement à l'initiative de l'acheteur</h3>
+      <p>Les billets achetés ne sont pas remboursables à l'initiative de l'acheteur, sauf :</p>
+      <ul>
+        <li>En cas d'erreur de commande signalée dans les <strong>2 heures</strong> suivant l'achat</li>
+        <li>En cas de double paiement avéré</li>
+        <li>Si le billet reçu ne correspond pas à la commande</li>
+      </ul>
+      <h3>4. Comment faire une demande</h3>
+      <p>Pour toute demande de remboursement, contactez notre équipe à <strong>kivupass@gmail.com</strong> en indiquant :</p>
+      <ul>
+        <li>Votre numéro de commande</li>
+        <li>L'événement concerné</li>
+        <li>Le motif de la demande</li>
+      </ul>
+      <p>Notre équipe traitera votre demande sous <strong>48 heures ouvrables</strong>.</p>
+      <h3>5. Frais non remboursables</h3>
+      <p>Les frais de service KivuPass (commission de plateforme) ne sont pas remboursables, sauf en cas d'annulation d'événement imputable à l'organisateur.</p>
+    `
+  },
+  aide: {
+    title: "Centre d'aide",
+    html: `
+      <span class="legal-chip">Support · Lun–Sam 8h–20h</span>
+      <h3>🎫 Acheter un billet</h3>
+      <p><strong>Comment acheter un billet sur KivuPass ?</strong></p>
+      <p>Créez un compte, parcourez les événements disponibles, sélectionnez votre billet et payez via Mobile Money ou carte bancaire. Votre billet (QR Code) vous est envoyé immédiatement par email.</p>
+      <p><strong>Je n'ai pas reçu mon billet, que faire ?</strong></p>
+      <p>Vérifiez votre dossier spam. Si le billet est absent, connectez-vous à votre espace "Mes billets". Contactez-nous à <strong>kivupass@gmail.com</strong> si le problème persiste.</p>
+      <h3>💳 Paiement</h3>
+      <p><strong>Quels modes de paiement sont acceptés ?</strong></p>
+      <ul>
+        <li>Airtel Money, M-Pesa, Orange Money</li>
+        <li>Carte Visa / Mastercard</li>
+        <li>Virement bancaire (organisateurs)</li>
+      </ul>
+      <p><strong>Mon paiement a été débité mais je n'ai pas de billet ?</strong></p>
+      <p>Patientez 10 minutes — parfois le délai réseau cause ce décalage. Si après 10 minutes vous n'avez rien reçu, contactez-nous immédiatement avec la preuve de paiement.</p>
+      <h3>🏢 Organiser un événement</h3>
+      <p><strong>Comment créer ma billetterie sur KivuPass ?</strong></p>
+      <p>Créez un compte organisateur, cliquez sur "Créer votre billetterie", renseignez les informations de votre événement (date, lieu, tarifs, capacité) et publiez. Votre page est en ligne en moins de 10 minutes.</p>
+      <p><strong>Quand est-ce que je reçois les paiements de mes ventes ?</strong></p>
+      <p>Les reversements sont effectués 48h après l'événement, une fois les accès validés. Les délais peuvent varier selon le mode de paiement choisi.</p>
+      <h3>🔄 Remboursements & annulations</h3>
+      <p>Consultez notre <strong>Politique de remboursement</strong> pour tous les détails. Pour toute demande urgente, écrivez à <strong>kivupass@gmail.com</strong> ou contactez-nous sur WhatsApp au <strong>+243 979 728 411</strong>.</p>
+      <h3>📱 Application mobile</h3>
+      <p>KivuPass est accessible depuis votre navigateur mobile sans installation. Une application native est en cours de développement — inscrivez-vous pour être notifié en priorité.</p>
+      <div class="legal-highlight">Vous n'avez pas trouvé votre réponse ? Écrivez-nous à <strong>kivupass@gmail.com</strong> ou sur WhatsApp au <strong>+243 979 728 411</strong>. Réponse garantie sous 24h.</div>
+    `
+  },
+  apropos: {
+    title: "À propos de KivuPass",
+    html: `
+      <span class="legal-chip">KivuPass · Fondée en 2024</span>
+      <h3>Notre mission</h3>
+      <p>KivuPass est née d'un constat simple : en République Démocratique du Congo et en Afrique centrale, organiser un événement et vendre des billets restait un processus manuel, lent et peu sécurisé. Nous avons décidé de changer ça.</p>
+      <p>Notre mission est de donner aux créateurs d'événements — qu'ils soient artistes, promoteurs, associations ou entreprises — les outils numériques pour vendre leurs billets simplement, encaisser en toute sécurité, et offrir une expérience premium à leur public.</p>
+      <h3>Ce que nous faisons</h3>
+      <ul>
+        <li>Billetterie en ligne avec QR Code anti-fraude</li>
+        <li>Paiement mobile money intégré (Airtel, M-Pesa, Orange)</li>
+        <li>Tableau de bord analytique en temps réel</li>
+        <li>Gestion des accès et validation à l'entrée</li>
+        <li>Support dédié pour les organisateurs</li>
+      </ul>
+      <h3>Nos chiffres</h3>
+      <div class="legal-highlight">500+ événements organisés · 1 000+ billets vendus · 100+ organisateurs actifs · Note moyenne 4.9/5</div>
+      <h3>Nous contacter</h3>
+      <ul>
+        <li>Email : <strong>kivupass@gmail.com</strong></li>
+        <li>WhatsApp : <strong>+243 979 728 411</strong></li>
+        <li>Disponibilité : Lundi – Samedi · 8h00 – 20h00</li>
+      </ul>
+      <h3>Mentions légales</h3>
+      <p>KivuPass est une plateforme exploitée par KivuPass SARL, société à responsabilité limitée de droit congolais. Siège social : Goma, Nord-Kivu, République Démocratique du Congo. Directeur de publication : Équipe KivuPass. Hébergement : Serveurs sécurisés avec chiffrement SSL.</p>
+    `
+  }
+};
+
+function openLegal(page) {
+  const overlay = document.getElementById('legal-modal');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  switchLegal(page, null);
+}
+
+function closeLegal() {
+  document.getElementById('legal-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchLegal(page, tabEl) {
+  const data = legalContent[page];
+  if (!data) return;
+  document.getElementById('legal-modal-title').textContent = data.title;
+  document.getElementById('legal-body').innerHTML = data.html;
+  document.getElementById('legal-body').scrollTop = 0;
+  // Update active tab
+  document.querySelectorAll('.legal-tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) {
+    tabEl.classList.add('active');
+  } else {
+    // Find matching tab by index
+    const pages = ['cgu','confidentialite','cookies','remboursements','aide','apropos'];
+    const idx = pages.indexOf(page);
+    const tabs = document.querySelectorAll('.legal-tab');
+    if (tabs[idx]) tabs[idx].classList.add('active');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLegal();
+});
+
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
